@@ -2,6 +2,11 @@ package com.missclick.spy.feature.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.missclick.spy.core.data.OptionsRepo
+import com.missclick.spy.core.domain.GetRandomWordUseCase
+import com.missclick.spy.core.domain.GetWordsUseCase
+import com.missclick.spy.core.model.Options
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
@@ -9,39 +14,44 @@ import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-class GameViewModel : ViewModel() {
+class GameViewModel(
+    private val getRandomWordUseCase: GetRandomWordUseCase,
+    private val optionsRepo: OptionsRepo
+) : ViewModel() {
 
     private val _viewState = MutableStateFlow<GameViewState>(GameViewState.Loading)
     val viewState = _viewState.asStateFlow()
 
     init {
-        //todo get the data from ..
-        val locations = listOf("Home", "Cafe")
-        val players = 5
-        val spies = 2
-        val timer = 1
+        viewModelScope.launch(Dispatchers.IO) {
+            val wordResult = getRandomWordUseCase()
+            wordResult.onSuccess { word ->
+                val options = optionsRepo.options.first()
+                initCards(options = options, word = word)
+            }
+        }
+    }
 
-
-        val location = locations.random(Random(System.currentTimeMillis()))
-
-        val localCads = List(players - spies) {
+    private fun initCards(options: Options, word: String) {
+        val localCads = List(options.playersCount - options.spiesCount) {
             CardInfo(
                 cardState = CardState.CLOSED,
-                location = location,
+                location = word,
                 isSpy = false
             )
         }
 
-        val spyCards = List(spies) {
+        val spyCards = List(options.spiesCount) {
             CardInfo(
                 cardState = CardState.CLOSED,
-                location = location,
+                location = word,
                 isSpy = true
             )
         }
@@ -51,11 +61,9 @@ class GameViewModel : ViewModel() {
         _viewState.update {
             GameViewState.Preparing(
                 cards = cards,
-                timerMin = timer
+                timerMin = options.time
             )
         }
-
-
     }
 
     fun onCardClick() {

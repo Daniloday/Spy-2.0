@@ -3,6 +3,7 @@ package com.missclick.spy.feature.game_options
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.missclick.spy.core.common.Constant.PLAYERS_MAX
+import com.missclick.spy.core.common.Constant.PLAYERS_MIN
+import com.missclick.spy.core.common.Constant.SPIES_MAX
+import com.missclick.spy.core.common.Constant.SPIES_MIN
+import com.missclick.spy.core.common.Constant.TIMER_MAX
+import com.missclick.spy.core.common.Constant.TIMER_MIN
 import com.missclick.spy.core.ui.kit.Image
 import com.missclick.spy.core.ui.kit.buttons.SecondaryButton
 import com.missclick.spy.core.ui.R
@@ -32,6 +39,7 @@ import com.missclick.spy.core.ui.kit.FrameText
 import com.missclick.spy.core.ui.kit.Triangle
 import com.missclick.spy.core.ui.kit.buttons.PrimaryButton
 import com.missclick.spy.core.ui.theme.AppTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun GameOptionsRoute(
@@ -40,7 +48,7 @@ internal fun GameOptionsRoute(
     onGuideClick: () -> Unit,
     onStartClick: () -> Unit,
     onSelectSetClick: () -> Unit,
-    vm: GameOptionsViewModel = viewModel(),
+    vm: GameOptionsViewModel = koinViewModel(),
 ) {
 
     val viewState by vm.viewState.collectAsState()
@@ -76,29 +84,54 @@ private fun GameOptionsScreen(
             onGuideClick = onGuideClick,
             onSettingsClick = onSettingsClick,
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Options(
-                modifier = Modifier,
+        when (viewState){
+            is GameOptionsViewState.Success -> GameOptionsSuccess(
+                onStart = onStart,
+                onGuideClick = onGuideClick,
+                onSettingsClick = onSettingsClick,
+                onSelectSetClick = onSelectSetClick,
                 vm = vm,
                 viewState = viewState
             )
+            is GameOptionsViewState.Loading -> Unit
         }
-        PrimaryButton(
-            onClick = onStart,
-            text = stringResource(R.string.start)
+    }
+}
+
+@Composable
+private fun ColumnScope.GameOptionsSuccess(
+    modifier: Modifier = Modifier,
+    onStart: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onGuideClick: () -> Unit,
+    onSelectSetClick: () -> Unit,
+    viewState: GameOptionsViewState.Success,
+    vm: GameOptionsViewModel,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .weight(1f),
+        contentAlignment = Alignment.Center
+    ) {
+        Options(
+            modifier = Modifier,
+            vm = vm,
+            viewState = viewState,
+            onSelectSetClick = onSelectSetClick
         )
     }
+    PrimaryButton(
+        onClick = onStart,
+        text = stringResource(R.string.start)
+    )
 }
 
 @Composable
 private fun Options(
     modifier: Modifier = Modifier,
-    viewState: GameOptionsViewState,
+    viewState: GameOptionsViewState.Success,
+    onSelectSetClick: () -> Unit,
     vm: GameOptionsViewModel,
 ) {
     Column(
@@ -107,28 +140,60 @@ private fun Options(
     ) {
         Option(
             name = stringResource(id = R.string.players),
-            value = viewState.players.toString(),
-            isDownEnabled = viewState.isPlayersDownEnabled,
-            isUpEnabled = viewState.isPlayersUpEnabled,
+            value = viewState.playersCount.toString(),
+            isDownEnabled = viewState.playersCount > PLAYERS_MIN,
+            isUpEnabled = viewState.playersCount < PLAYERS_MAX,
             onUpClick = vm::onUpPlayers,
             onDownClick = vm::onDownPlayers
         )
         Option(
             name = stringResource(id = R.string.spies),
-            value = viewState.spies.toString(),
-            isDownEnabled = viewState.isSpiesDownEnabled,
-            isUpEnabled = viewState.isSpiesUpEnabled,
+            value = viewState.spiesCount.toString(),
+            isDownEnabled = viewState.spiesCount > SPIES_MIN,
+            isUpEnabled = viewState.spiesCount < SPIES_MAX
+                    && viewState.spiesCount < viewState.playersCount - 1,
             onUpClick = vm::onUpSpies,
             onDownClick = vm::onDownSpies
         )
         Option(
             name = stringResource(id = R.string.timer),
-            value = viewState.timerMinute.toString(),
-            isDownEnabled = viewState.isTimerDownEnabled,
-            isUpEnabled = viewState.isTimerUpEnabled,
-            onUpClick = vm::onUpTimer,
-            onDownClick = vm::onDownTimer
+            value = viewState.time.toString(),
+            isDownEnabled = viewState.time > TIMER_MIN,
+            isUpEnabled = viewState.time < TIMER_MAX,
+            onUpClick = vm::onUpTime,
+            onDownClick = vm::onDownTime
         )
+        CollectionSelector(
+            value = viewState.collectionName,
+            onSelectClick = onSelectSetClick
+        )
+    }
+}
+
+@Composable
+private fun CollectionSelector(
+    modifier: Modifier = Modifier,
+    value: String,
+    onSelectClick: () -> Unit,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(id = R.string.set),
+            color = AppTheme.colors.primary,
+            style = AppTheme.types.h28,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FrameText(text = value)
+            Triangle(
+                modifier = Modifier.size(48.dp),
+                onClick = onSelectClick
+            )
+        }
     }
 }
 

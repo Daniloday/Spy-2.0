@@ -1,5 +1,6 @@
 package com.missclick.spy.feature.settings
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -36,14 +37,14 @@ class SettingsViewModel(private val application: Application): AndroidViewModel(
         selectedLanguage: Language,
     ) {
 
-        val locale = Locale("ru")
+        val locale = Locale(selectedLanguage.isoCode)
         Locale.setDefault(locale)
 
         val config = Configuration(application.resources.configuration)
         config.setLocale(locale)
 
-        application.createConfigurationContext(config)
-
+//        application.createConfigurationContext(config)
+        application.resources.updateConfiguration(config, application.resources.displayMetrics)
 //        val intent = Intent(this, MainActivity::class.java)
 //        application.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
 

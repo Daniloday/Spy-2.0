@@ -19,7 +19,7 @@ import com.missclick.spy.core.ui.theme.AppTheme
 @Composable
 fun Triangle(
     modifier: Modifier = Modifier,
-    isEnabled: Boolean,
+    isEnabled: Boolean = true,
     onClick: () -> Unit,
     enabledColor: Color = AppTheme.colors.secondary,
     disabledColor: Color = AppTheme.colors.onSecondary,

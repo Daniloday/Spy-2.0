@@ -1,116 +1,110 @@
 package com.missclick.spy.feature.game_options
 
 import androidx.lifecycle.ViewModel
-import com.missclick.spy.core.common.Constant.PLAYERS_MAX
-import com.missclick.spy.core.common.Constant.PLAYERS_MIN
-import com.missclick.spy.core.common.Constant.SPIES_MAX
-import com.missclick.spy.core.common.Constant.SPIES_MIN
-import com.missclick.spy.core.common.Constant.TIMER_MAX
-import com.missclick.spy.core.common.Constant.TIMER_MIN
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewModelScope
+import com.missclick.spy.core.data.OptionsRepo
+import com.missclick.spy.core.data.WordRepo
+import com.missclick.spy.core.model.Word
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class GameOptionsViewModel: ViewModel() {
+class GameOptionsViewModel(
+    private val optionsRepo: OptionsRepo,
+    private val wordRepo: WordRepo,
+) : ViewModel() {
 
-    private val _viewState = MutableStateFlow(GameOptionsViewState())
-    val viewState: StateFlow<GameOptionsViewState> = _viewState.asStateFlow()
+    init {
+        println("init test")
+        viewModelScope.launch(Dispatchers.IO) {
+            wordRepo.put(Word("test1", "col1", false))
+            wordRepo.put(Word("test2", "col2", false))
+            wordRepo.put(Word("test3", "col2", false))
+            wordRepo.put(Word("test4", "col1", false))
+            println(
+                wordRepo.getCollections("en")
+            )
+        }
+    }
+
+    val viewState: StateFlow<GameOptionsViewState> = optionsRepo.options.map {
+        GameOptionsViewState.Success(
+            playersCount = it.playersCount,
+            spiesCount = it.spiesCount,
+            time = it.time,
+            collectionName = it.collectionName
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = GameOptionsViewState.Loading,
+    )
 
 
     fun onUpPlayers() {
-        if (viewState.value.players < PLAYERS_MAX) {
-            _viewState.update {
-                it.copy(
-                    players = it.players + 1,
-                    isPlayersUpEnabled = it.players + 1 != PLAYERS_MAX,
-                    isPlayersDownEnabled = true,
-                    isSpiesUpEnabled = true
-                )
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newPlayersCount = viewState.playersCount + 1
+            optionsRepo.setPlayersCount(newPlayersCount)
         }
     }
 
     fun onDownPlayers() {
-        if (viewState.value.players > PLAYERS_MIN) {
-            _viewState.update {
-                it.copy(
-                    players = it.players - 1,
-                    isPlayersDownEnabled = it.players - 1 != PLAYERS_MIN,
-                    isPlayersUpEnabled = true,
-                    spies = if (it.players - 1 == it.spies) it.spies - 1 else it.spies,
-                    isSpiesUpEnabled = it.spies != it.players - 2
-                )
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newPlayersCount = viewState.playersCount - 1
+            optionsRepo.setPlayersCount(newPlayersCount)
+            if (viewState.spiesCount == newPlayersCount) {
+                val newSpiesCount = viewState.spiesCount - 1
+                optionsRepo.setSpiesCount(newSpiesCount)
             }
         }
     }
 
-    fun onUpTimer() {
-        if (viewState.value.timerMinute < TIMER_MAX) {
-            _viewState.update {
-                it.copy(
-                    timerMinute = it.timerMinute + 1,
-                    isTimerUpEnabled = it.timerMinute + 1 != TIMER_MAX,
-                    isTimerDownEnabled = true
-                )
-            }
+    fun onUpTime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newTime = viewState.time + 1
+            optionsRepo.setTime(newTime)
         }
     }
 
-    fun onDownTimer() {
-        if (viewState.value.timerMinute > TIMER_MIN) {
-            _viewState.update {
-                it.copy(
-                    timerMinute = it.timerMinute - 1,
-                    isTimerDownEnabled = it.timerMinute - 1 != TIMER_MIN,
-                    isTimerUpEnabled = true
-                )
-            }
+    fun onDownTime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newTime = viewState.time - 1
+            optionsRepo.setTime(newTime)
         }
     }
 
     fun onUpSpies() {
-        if (viewState.value.spies < viewState.value.players - 1) {
-            _viewState.update {
-                it.copy(
-                    spies = it.spies + 1,
-                    isSpiesUpEnabled = it.spies + 1 != it.players - 1,
-                    isSpiesDownEnabled = true
-                )
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newSpiesCount = viewState.spiesCount + 1
+            optionsRepo.setSpiesCount(newSpiesCount)
         }
     }
 
     fun onDownSpies() {
-        if (viewState.value.spies > SPIES_MIN) {
-            _viewState.update {
-                it.copy(
-                    spies = it.spies - 1,
-                    isSpiesDownEnabled = it.spies - 1 != SPIES_MIN,
-                    isSpiesUpEnabled = true
-                )
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val viewState = viewState.value as? GameOptionsViewState.Success ?: return@launch
+            val newSpiesCount = viewState.spiesCount - 1
+            optionsRepo.setSpiesCount(newSpiesCount)
         }
     }
 
 
-
 }
 
-data class GameOptionsViewState(
-    val players: Int = 3,
-    val isPlayersUpEnabled: Boolean = true,
-    val isPlayersDownEnabled: Boolean = false,
-
-    val spies: Int = 1,
-    val isSpiesUpEnabled: Boolean = true,
-    val isSpiesDownEnabled: Boolean = false,
-
-    val timerMinute: Int = 2,
-    val isTimerUpEnabled: Boolean = true,
-    val isTimerDownEnabled: Boolean = true,
-
-    val set: String = "base",
-)
+sealed class GameOptionsViewState {
+    data object Loading : GameOptionsViewState()
+    data class Success(
+        val playersCount: Int,
+        val spiesCount: Int,
+        val time: Int,
+        val collectionName: String,
+    ) : GameOptionsViewState()
+}

@@ -1,5 +1,9 @@
 package com.missclick.spy
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,11 +19,12 @@ import androidx.compose.ui.res.stringResource
 import com.missclick.spy.core.navigation.NavGraph
 import com.missclick.spy.core.ui.theme.AppTheme
 import com.missclick.spy.core.ui.theme.SpyTheme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println(Resources.getSystem().configuration.locales[0].language)
 
         setContent {
             println(stringResource(id = R.string.app_name))

@@ -48,12 +48,13 @@ import com.missclick.spy.core.ui.theme.AppTheme
 import com.missclick.spy.core.ui.R
 import com.missclick.spy.core.ui.kit.buttons.PrimaryButton
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun GameRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    vm: GameViewModel = viewModel(),
+    vm: GameViewModel = koinViewModel(),
 ) {
 
     val viewState by vm.viewState.collectAsState()

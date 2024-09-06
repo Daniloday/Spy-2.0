@@ -54,4 +54,19 @@ android {
 dependencies {
     implementation(projects.core.navigation)
     implementation(projects.core.ui)
+    implementation(projects.core.data)
+    implementation(projects.core.datastore)
+    implementation(projects.feature.gameOptions)
+    implementation(projects.feature.game)
+    implementation(projects.feature.words)
+    implementation(projects.feature.collections)
+    implementation(projects.core.database)
+    implementation(projects.core.domain)
+    implementation(projects.core.device)
+
+    //koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+
 }
