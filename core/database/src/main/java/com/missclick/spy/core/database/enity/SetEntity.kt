@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.missclick.spy.core.model.Collection
+import com.missclick.spy.core.model.Set
 
 @Entity(
     tableName = "set",
@@ -32,14 +32,14 @@ internal data class SetEntity(
     val isCustom: Boolean = true,
 )
 
-internal fun SetEntity.asModel(): Collection {
-    return Collection(
+internal fun SetEntity.asModel(): Set {
+    return Set(
         name = name,
         isCustom = isCustom,
     )
 }
 
-internal fun Collection.asEntity(languageId: Int): SetEntity {
+internal fun Set.asEntity(languageId: Int): SetEntity {
     return SetEntity(
         name = name,
         languageId = languageId,

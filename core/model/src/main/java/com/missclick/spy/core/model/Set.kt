@@ -2,7 +2,7 @@ package com.missclick.spy.core.model
 
 
 
-data class Collection(
+data class Set(
     val name: String,
     val isCustom: Boolean
 )

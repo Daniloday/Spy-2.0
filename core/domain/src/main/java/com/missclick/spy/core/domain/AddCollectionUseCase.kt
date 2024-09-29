@@ -2,7 +2,7 @@ package com.missclick.spy.core.domain
 
 import com.missclick.spy.core.data.DeviceRepo
 import com.missclick.spy.core.data.WordRepo
-import com.missclick.spy.core.model.Collection
+import com.missclick.spy.core.model.Set
 
 class AddCollectionUseCase(
     private val wordRepo: WordRepo,
@@ -11,12 +11,12 @@ class AddCollectionUseCase(
 
     suspend operator fun invoke(name: String) {
         val currentLanguageCode = deviceRepo.getCurrentLanguageCode()
-        val collection = Collection(
+        val set = Set(
             name = name,
             isCustom = true
         )
         wordRepo.addCollection(
-            collection = collection,
+            set = set,
             languageCode = currentLanguageCode
         )
     }

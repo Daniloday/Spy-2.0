@@ -2,9 +2,9 @@ package com.missclick.spy.core.database.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.missclick.spy.core.database.enity.SetEntity
 import com.missclick.spy.core.database.enity.LanguageEntity
 import com.missclick.spy.core.database.enity.LocationEntity
+import com.missclick.spy.core.database.enity.SetEntity
 
 
 @Database(

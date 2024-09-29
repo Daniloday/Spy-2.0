@@ -2,7 +2,7 @@ package com.missclick.spy.core.data.repo
 
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.database.WordDataSource
-import com.missclick.spy.core.model.Collection
+import com.missclick.spy.core.model.Set
 import com.missclick.spy.core.model.Language
 import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +39,7 @@ internal class WordRepoImpl(
         return wordDataSource.getDefaultCollection(languageCode)
     }
 
-    override suspend fun getCollection(collectionName: String, languageCode: String): Collection {
+    override suspend fun getCollection(collectionName: String, languageCode: String): Set {
         return wordDataSource.getCollection(collectionName, languageCode)
     }
 
@@ -55,8 +55,8 @@ internal class WordRepoImpl(
         wordDataSource.addWord(word, collectionName, languageCode)
     }
 
-    override suspend fun addCollection(collection: Collection, languageCode: String) {
-        wordDataSource.addCollection(collection, languageCode)
+    override suspend fun addCollection(set: Set, languageCode: String) {
+        wordDataSource.addCollection(set, languageCode)
     }
 
 }

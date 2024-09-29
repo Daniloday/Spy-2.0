@@ -3,7 +3,7 @@ package com.missclick.spy.core.database
 import com.missclick.spy.core.database.enity.asEntity
 import com.missclick.spy.core.database.enity.asModel
 import com.missclick.spy.core.database.room.SpyDatabase
-import com.missclick.spy.core.model.Collection
+import com.missclick.spy.core.model.Set
 import com.missclick.spy.core.model.Language
 import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,7 @@ internal class WordDataSourceImpl(
         return db.wordDao().getLanguages().map { it.asModel() }
     }
 
-    override suspend fun getCollection(collectionName: String, languageCode: String): Collection {
+    override suspend fun getCollection(collectionName: String, languageCode: String): Set {
         return db.wordDao().getCollection(collectionName, languageCode).asModel()
     }
 
@@ -50,9 +50,9 @@ internal class WordDataSourceImpl(
         db.wordDao().insertWord(wordEntity)
     }
 
-    override suspend fun addCollection(collection: Collection, languageCode: String) {
+    override suspend fun addCollection(set: Set, languageCode: String) {
         val languageEntity = db.wordDao().getLanguage(languageCode)
-        val collectionEntity = collection.asEntity(languageEntity.id)
+        val collectionEntity = set.asEntity(languageEntity.id)
         db.wordDao().insertCollection(collectionEntity)
     }
 

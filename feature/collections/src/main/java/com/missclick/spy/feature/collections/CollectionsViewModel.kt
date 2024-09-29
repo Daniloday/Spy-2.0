@@ -1,16 +1,10 @@
 package com.missclick.spy.feature.collections
 
-import androidx.compose.ui.util.trace
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.domain.AddCollectionUseCase
-import com.missclick.spy.core.domain.GetCollectionsUseCase
 import com.missclick.spy.core.domain.GetOptionsUseCase
-import com.missclick.spy.core.domain.SetCollectionUseCase
-import com.missclick.spy.core.model.Collection
-import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

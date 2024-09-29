@@ -1,13 +1,11 @@
 package com.missclick.spy.feature.words
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.domain.GetOptionsUseCase
 import com.missclick.spy.core.domain.SetCollectionUseCase
-import com.missclick.spy.core.model.Collection
+import com.missclick.spy.core.model.Set
 import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,15 +36,15 @@ class WordsViewModel(
         }
     }
 
-    private fun initSuccess(selectedCollection: Collection, words: List<String>) {
+    private fun initSuccess(selectedSet: Set, words: List<String>) {
         val successState = viewState.value as? WordsViewState.Success
         _viewState.update {
             WordsViewState.Success(
                 words = words,
                 isEnteringNewWord = successState?.isEnteringNewWord ?: false,
                 newWord = successState?.newWord ?: "",
-                collectionName = selectedCollection.name,
-                isEditable = selectedCollection.isCustom
+                collectionName = selectedSet.name,
+                isEditable = selectedSet.isCustom
             )
         }
     }
