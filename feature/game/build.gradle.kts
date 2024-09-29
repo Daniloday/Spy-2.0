@@ -39,6 +39,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.data)
     implementation(projects.core.model)
+    implementation(projects.core.advertising)
 
     //koin
     implementation(platform(libs.koin.bom))

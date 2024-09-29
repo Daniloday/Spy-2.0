@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val collectionsModule = module {
 
-    viewModel { CollectionsViewModel() }
+    viewModel { CollectionsViewModel(get(), get(), get()) }
 
 }

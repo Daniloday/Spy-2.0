@@ -15,23 +15,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.missclick.spy.core.ui.R
 import com.missclick.spy.core.ui.kit.AppDivider
 import com.missclick.spy.core.ui.theme.AppTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    vm: SettingsViewModel = viewModel(),
+    vm: SettingsViewModel = koinViewModel(),
 ) {
 
     val viewState by vm.viewState.collectAsState()
@@ -49,7 +52,7 @@ private fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewState: SettingsViewState,
     onBackClick: () -> Unit,
-    onLanguageClick: (Language) -> Unit,
+    onLanguageClick: (LanguageView) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -65,8 +68,8 @@ private fun SettingsScreen(
 @Composable
 private fun Languages(
     modifier: Modifier = Modifier,
-    languages: List<Language>,
-    onLanguageClick: (Language) -> Unit,
+    languages: List<LanguageView>,
+    onLanguageClick: (LanguageView) -> Unit,
 ){
     LazyColumn(
         modifier = modifier

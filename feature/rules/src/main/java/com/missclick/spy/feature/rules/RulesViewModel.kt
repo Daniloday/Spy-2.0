@@ -16,7 +16,6 @@ class RulesViewModel : ViewModel() {
     val viewState: StateFlow<RulesViewState> = _viewState.asStateFlow()
 
     init {
-        println(Resources.getSystem().configuration.locales[0].language)
         _viewState.update {
             it.copy(
                 rules = getRules()

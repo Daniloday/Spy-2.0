@@ -5,4 +5,5 @@ data class Options(
     val spiesCount: Int,
     val time: Int,
     val collectionName: String,
+    val languageCode: String,
 )

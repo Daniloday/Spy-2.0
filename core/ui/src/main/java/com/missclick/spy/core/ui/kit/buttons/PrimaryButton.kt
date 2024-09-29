@@ -18,7 +18,8 @@ fun PrimaryButton(
     text: String,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = AppTheme.colors.secondary
+        containerColor = AppTheme.colors.secondary,
+        disabledContainerColor = AppTheme.colors.onSecondary
     ),
 ) {
     Button(

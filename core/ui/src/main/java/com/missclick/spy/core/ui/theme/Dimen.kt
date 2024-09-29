@@ -15,7 +15,7 @@ data class SpyDimens(
 
 val spyDimens = SpyDimens(
     primaryButtonHeight = 56.dp,
-    secondaryButtonHeight = 92.dp,
+    secondaryButtonHeight = 56.dp,
     horizontalPadding = 16.dp,
     topBarHeight = 56.dp,
 )

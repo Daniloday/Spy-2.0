@@ -7,25 +7,35 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class OptionsRepoImpl(
-    private val optionsDataSourceImpl: OptionsDataSource
+    private val optionsDataSource: OptionsDataSource,
 ) : OptionsRepo {
 
-    override val options: Flow<Options> = optionsDataSourceImpl.options
+    override val options: Flow<Options> = optionsDataSource.options
 
     override suspend fun setPlayersCount(playersCount: Int) {
-        optionsDataSourceImpl.setPlayersCount(playersCount)
+        optionsDataSource.setPlayersCount(playersCount)
     }
 
     override suspend fun setSpiesCount(spiesCount: Int) {
-        optionsDataSourceImpl.setSpiesCount(spiesCount)
+        optionsDataSource.setSpiesCount(spiesCount)
     }
 
     override suspend fun setTime(time: Int) {
-        optionsDataSourceImpl.setTime(time)
+        optionsDataSource.setTime(time)
     }
 
-    override suspend fun setCollectionName(collectionName: String) {
-        optionsDataSourceImpl.setCollectionName(collectionName)
+    override suspend fun setCollectionName(
+        collectionName: String,
+        languageCode: String,
+    ) {
+        optionsDataSource.setCollectionName(
+            collectionName = collectionName,
+            languageCode = languageCode
+        )
+    }
+
+    override suspend fun setLanguage(languageCode: String) {
+        optionsDataSource.setLanguage(languageCode)
     }
 
 

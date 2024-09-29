@@ -3,8 +3,8 @@ package com.missclick.spy.feature.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missclick.spy.core.data.OptionsRepo
-import com.missclick.spy.core.domain.GetRandomWordUseCase
-import com.missclick.spy.core.domain.GetWordsUseCase
+import com.missclick.spy.core.data.WordRepo
+import com.missclick.spy.core.domain.GetOptionsUseCase
 import com.missclick.spy.core.model.Options
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,8 +22,8 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class GameViewModel(
-    private val getRandomWordUseCase: GetRandomWordUseCase,
-    private val optionsRepo: OptionsRepo
+    private val wordRepo: WordRepo,
+    private val getOptionsUseCase: GetOptionsUseCase,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<GameViewState>(GameViewState.Loading)
@@ -31,19 +31,18 @@ class GameViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val wordResult = getRandomWordUseCase()
-            wordResult.onSuccess { word ->
-                val options = optionsRepo.options.first()
-                initCards(options = options, word = word)
-            }
+            val options = getOptionsUseCase().first()
+            val wordResult = wordRepo.getWords(options.collectionName, options.languageCode)
+            initCards(options = options, words = wordResult.first())
         }
     }
 
-    private fun initCards(options: Options, word: String) {
+    private fun initCards(options: Options, words: List<String>) {
+        val randomWord = words.random(Random(System.currentTimeMillis()))
         val localCads = List(options.playersCount - options.spiesCount) {
             CardInfo(
                 cardState = CardState.CLOSED,
-                location = word,
+                location = randomWord,
                 isSpy = false
             )
         }
@@ -51,7 +50,7 @@ class GameViewModel(
         val spyCards = List(options.spiesCount) {
             CardInfo(
                 cardState = CardState.CLOSED,
-                location = word,
+                location = randomWord,
                 isSpy = true
             )
         }

@@ -3,13 +3,15 @@ package com.missclick.spy.feature.collections.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.missclick.spy.core.model.Collection
 import com.missclick.spy.feature.collections.CollectionsRoute
 
 
 const val COLLECTIONS_ROUTE = "Collections"
 
 fun NavGraphBuilder.collectionsScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onCollectionClick: (String) -> Unit,
 ) {
 
     composable(
@@ -17,8 +19,7 @@ fun NavGraphBuilder.collectionsScreen(
     ) {
         CollectionsRoute(
             onBackClick = onBackClick,
-            onAddNewCollectionClick = {},
-            onCollectionClick = {}
+            onCollectionClick = onCollectionClick
         )
     }
 
@@ -26,4 +27,8 @@ fun NavGraphBuilder.collectionsScreen(
 
 fun NavController.navigateToCollections() {
     navigate(COLLECTIONS_ROUTE)
+}
+
+fun NavController.navigateBackToCollections() {
+    popBackStack(route = COLLECTIONS_ROUTE, inclusive = false)
 }

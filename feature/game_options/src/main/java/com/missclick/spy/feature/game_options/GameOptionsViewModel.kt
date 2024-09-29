@@ -4,33 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
+import com.missclick.spy.core.domain.GetOptionsUseCase
 import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class GameOptionsViewModel(
     private val optionsRepo: OptionsRepo,
-    private val wordRepo: WordRepo,
+    getOptionsUseCase: GetOptionsUseCase
 ) : ViewModel() {
 
-    init {
-        println("init test")
-        viewModelScope.launch(Dispatchers.IO) {
-            wordRepo.put(Word("test1", "col1", false))
-            wordRepo.put(Word("test2", "col2", false))
-            wordRepo.put(Word("test3", "col2", false))
-            wordRepo.put(Word("test4", "col1", false))
-            println(
-                wordRepo.getCollections("en")
-            )
-        }
-    }
-
-    val viewState: StateFlow<GameOptionsViewState> = optionsRepo.options.map {
+    val viewState: StateFlow<GameOptionsViewState> = getOptionsUseCase().map {
         GameOptionsViewState.Success(
             playersCount = it.playersCount,
             spiesCount = it.spiesCount,
@@ -42,7 +31,6 @@ class GameOptionsViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = GameOptionsViewState.Loading,
     )
-
 
     fun onUpPlayers() {
         viewModelScope.launch(Dispatchers.IO) {

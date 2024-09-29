@@ -22,6 +22,7 @@
     <string name="restart">Once more</string>
     <string name="choose">Choose a set</string>
     <string name="print_word">Enter a location</string>
+    <string name="enter_dictionary">Enter a dictionary</string>
     <string name="add_word">Add a word</string>
     <string name="add_set">Add a set</string>
     <string name="toast_empty_set">You cannot select an empty set</string>

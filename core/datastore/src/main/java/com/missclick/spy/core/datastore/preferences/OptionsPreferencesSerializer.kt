@@ -14,7 +14,8 @@ internal class OptionsPreferencesSerializer(
         playersCount = 4,
         spiesCount = 1,
         time = 2,
-        collectionName = "base"
+        collectionName = "",
+        languageCode = ""
     )
 ) : Serializer<OptionsPreferences> {
 

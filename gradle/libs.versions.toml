@@ -10,7 +10,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.4"
 activityCompose = "1.9.1"
 composeBom = "2024.08.00"
-composeNavigation = "2.8.0-rc01"
+composeNavigation = "2.8.0"
 appcompat = "1.7.0"
 dataStore = "1.1.1"
 kotlinxSerialization = "2.0.0"
@@ -21,6 +21,7 @@ androidSdk-min = "24"
 androidSdk-compile = "34"
 material = "1.12.0"
 jetbrainsKotlinJvm = "2.0.10"
+playServicesAds = "23.3.0"
 roomCompiler = "2.6.1"
 roomCommon = "2.6.1"
 roomKtx = "2.6.1"
@@ -56,6 +57,7 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose"}
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose"}
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

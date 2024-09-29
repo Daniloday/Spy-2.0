@@ -32,5 +32,7 @@ dependencies {
     implementation(projects.feature.game)
     implementation(projects.feature.guide)
     implementation(projects.feature.settings)
+    implementation(projects.feature.collections)
+    implementation(projects.feature.words)
 
 }

@@ -8,7 +8,7 @@ import com.missclick.spy.feature.guide.GuideRoute
 
 const val GUIDE_ROUTE = "guide"
 
-fun NavGraphBuilder.guideNavigation(
+fun NavGraphBuilder.guideScreen(
     onBackClick: () -> Unit
 ) {
 

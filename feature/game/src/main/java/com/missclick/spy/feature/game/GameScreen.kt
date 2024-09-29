@@ -1,6 +1,7 @@
 package com.missclick.spy.feature.game
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -39,30 +40,47 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.missclick.spy.core.advertising.InterstitialAdManager
+import com.missclick.spy.core.advertising.InterstitialAdManagerImpl
 import com.missclick.spy.core.ui.theme.AppTheme
 import com.missclick.spy.core.ui.R
 import com.missclick.spy.core.ui.kit.buttons.PrimaryButton
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
+import org.koin.compose.koinInject
+import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 internal fun GameRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     vm: GameViewModel = koinViewModel(),
+    interstitialAdManager: InterstitialAdManager = koinInject(),
 ) {
 
     val viewState by vm.viewState.collectAsState()
+    val currentActivity = LocalContext.current as Activity
 
     GameScreen(
         modifier = modifier,
         viewState = viewState,
-        onBackClick = onBackClick,
+        onBackClick = {
+            if (viewState is GameViewState.End) {
+                interstitialAdManager.showAd(currentActivity) {
+                    onBackClick()
+                }
+            } else {
+                onBackClick()
+            }
+        },
         onCardClick = vm::onCardClick,
         onFindOutClick = vm::showSpies,
     )
@@ -108,7 +126,7 @@ private fun End(
     onNextClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -121,7 +139,7 @@ private fun End(
             else
                 stringResource(id = R.string.were_spies),
             color = AppTheme.colors.primary,
-            style = AppTheme.types.h22,
+            style = AppTheme.types.h28,
         )
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -129,7 +147,7 @@ private fun End(
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = "${stringResource(id = R.string.player)} $spyNumber",
-                style = AppTheme.types.h28,
+                style = AppTheme.types.h30,
                 color = AppTheme.colors.secondary,
                 textAlign = TextAlign.Center
             )
@@ -376,7 +394,8 @@ private fun CardOpenedLocal(
         )
         Text(
             text = location,
-            style = AppTheme.types.h48
+            style = AppTheme.types.h48,
+            textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.you_local),

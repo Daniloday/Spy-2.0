@@ -1,3 +1,6 @@
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.encoding
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -13,13 +16,15 @@ android {
         minSdk = libs.versions.androidSdk.min.get().toInt()
         targetSdk = libs.versions.androidSdk.target.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        resourceConfigurations += setOf("ru", "en", "uk")
+        val properties = Properties()
+        properties.load(project.rootProject.file("secrets.properties").inputStream())
+        manifestPlaceholders["ADMOB_APPLICATION_ID"] = properties.getProperty("ADMOB_APPLICATION_ID")
     }
 
     buildTypes {
@@ -39,6 +44,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -62,7 +68,10 @@ dependencies {
     implementation(projects.feature.collections)
     implementation(projects.core.database)
     implementation(projects.core.domain)
+    implementation(projects.core.model)
     implementation(projects.core.device)
+    implementation(projects.feature.settings)
+    implementation(projects.core.advertising)
 
     //koin
     implementation(platform(libs.koin.bom))

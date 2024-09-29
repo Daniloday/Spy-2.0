@@ -1,77 +1,60 @@
 package com.missclick.spy.feature.settings
 
-import android.app.Activity
-import android.app.Application
-import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.missclick.spy.core.data.OptionsRepo
+import com.missclick.spy.core.data.WordRepo
+import com.missclick.spy.core.domain.GetOptionsUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Locale
+import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val application: Application): AndroidViewModel(application ) {
+class SettingsViewModel(
+    private val getOptionsUseCase: GetOptionsUseCase,
+    private val optionsRepo: OptionsRepo,
+    private val wordRepo: WordRepo,
+): ViewModel() {
 
-    private val _viewState = MutableStateFlow<SettingsViewState>(SettingsViewState())
+    private val _viewState = MutableStateFlow(SettingsViewState())
     val viewState = _viewState.asStateFlow()
 
     init {
-
-        val lang = Resources.getSystem().configuration.locales[0].language
-        _viewState.update { state ->
-            state.copy(
-                languages = state.languages.map {
-                    if (it.isoCode == lang) {
-                        return@map it.copy(isSelected = true)
-                    }
-                    it.copy(isSelected = false)
+        viewModelScope.launch(Dispatchers.IO) {
+            val languages = wordRepo.getLanguages()
+            getOptionsUseCase().collect { options ->
+                _viewState.update { state ->
+                    state.copy(
+                        languages = languages.map {
+                            LanguageView(
+                                name = it.name,
+                                code = it.code,
+                                isSelected = it.code == options.languageCode
+                            )
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 
     fun selectLanguage(
-        selectedLanguage: Language,
+        selectedLanguage: LanguageView,
     ) {
-
-        val locale = Locale(selectedLanguage.isoCode)
-        Locale.setDefault(locale)
-
-        val config = Configuration(application.resources.configuration)
-        config.setLocale(locale)
-
-//        application.createConfigurationContext(config)
-        application.resources.updateConfiguration(config, application.resources.displayMetrics)
-//        val intent = Intent(this, MainActivity::class.java)
-//        application.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-
-        _viewState.update { state ->
-            state.copy(
-                languages = state.languages.map {
-                    if (it.name == selectedLanguage.name) {
-                        return@map it.copy(isSelected = true)
-                    }
-                    it.copy(isSelected = false)
-                }
-            )
+        viewModelScope.launch {
+            optionsRepo.setLanguage(selectedLanguage.code)
         }
     }
 
 }
 
 data class SettingsViewState(
-    val languages: List<Language> = listOf(
-        Language("Rus", "ru"),
-        Language("English", "en"),
-        Language("Ukr", "uk"),
-    ),
+    val languages: List<LanguageView> = emptyList()
 )
 
-data class Language(
+data class LanguageView(
     val name: String,
-    val isoCode: String,
+    val code: String,
     val isSelected: Boolean = false,
 )

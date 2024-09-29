@@ -10,5 +10,8 @@ object Constant {
     const val TIMER_MAX = 10
     const val TIMER_MIN = 1
     const val TIMER_DEFAULT = 2
+    const val COLLECTION_NAME_MAX_LENGTH = 20
+    const val LOCATION_NAME_MAX_LENGTH = 20
+    const val MIN_LOCATIONS_TO_PLAY = 2
 
 }

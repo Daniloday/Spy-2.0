@@ -13,6 +13,11 @@ interface OptionsRepo {
 
     suspend fun setTime(time: Int)
 
-    suspend fun setCollectionName(collectionName: String)
+    suspend fun setCollectionName(
+        collectionName: String,
+        languageCode: String,
+    )
+
+    suspend fun setLanguage(languageCode: String)
 
 }

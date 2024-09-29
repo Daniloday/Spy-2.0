@@ -16,6 +16,8 @@ private fun provideDatabase(applicationContext: Context): SpyDatabase {
     return Room.databaseBuilder(
         applicationContext,
         SpyDatabase::class.java,
-        "word-database"
-    ).build()
+        "spy-database"
+    )
+        .createFromAsset("spy-database-preload.db")
+        .build()
 }

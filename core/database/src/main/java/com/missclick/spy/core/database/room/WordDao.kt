@@ -4,22 +4,100 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.missclick.spy.core.model.Word
+import com.missclick.spy.core.database.enity.SetEntity
+import com.missclick.spy.core.database.enity.LanguageEntity
+import com.missclick.spy.core.database.enity.LocationEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 internal interface WordDao {
-    @Query("SELECT word_name FROM word WHERE language_code = :languageCode AND collection_name = :collection")
+    @Query("""
+        SELECT location.name FROM location
+        INNER JOIN `set` ON location.set_id = `set`.id
+        INNER JOIN language ON `set`.language_id = language.id
+        WHERE `set`.name = :collectionName AND code = :languageCode
+    """)
     fun getWords(
-        languageCode: String,
-        collection: String,
-    ): List<String>
+        collectionName: String,
+        languageCode: String
+    ): Flow<List<String>>
 
-    @Query("SELECT DISTINCT collection_name FROM word WHERE language_code = :languageCode")
+    @Query("""
+       SELECT DISTINCT `set`.name FROM `set`
+        INNER JOIN language ON `set`.language_id = language.id
+        WHERE code = :languageCode
+    """)
     fun getCollections(
         languageCode: String,
-    ): List<String>
+    ): Flow<List<String>>
+
+    @Query("""
+       SELECT * FROM `set` 
+        WHERE language_id IN (
+           SELECT id FROM language WHERE code = :languageCode
+       ) AND `set`.name = :collectionName
+    """)
+    fun getCollection(
+        collectionName: String,
+        languageCode: String,
+    ): SetEntity
+
+    @Query("""
+       SELECT * FROM language WHERE code = :languageCode
+    """)
+    fun getLanguage(
+        languageCode: String,
+    ): LanguageEntity
+
+    @Query("""
+       SELECT * FROM language
+    """)
+    fun getLanguages(
+    ): List<LanguageEntity>
+
+    @Query("""
+       SELECT DISTINCT `set`.name FROM `set`
+        INNER JOIN language ON `set`.language_id = language.id
+        WHERE code = :languageCode LIMIT 1
+    """)
+    fun getDefaultCollection(
+        languageCode: String,
+    ): String
+
+    @Query("""
+       SELECT DISTINCT code FROM language LIMIT 1
+    """)
+    fun getDefaultLanguage(): String
+
+    @Query("""
+       SELECT EXISTS(SELECT 1 FROM language WHERE code = :languageCode LIMIT 1)
+    """)
+    fun isExistLanguage(languageCode: String): Boolean
+
+    @Query("""
+       DELETE FROM location WHERE name =:wordName
+    """)
+    fun deleteWord(wordName: String)
+
+    @Query("""
+       DELETE FROM `set`
+       WHERE language_id IN (
+           SELECT id FROM language WHERE code = :languageCode
+       ) AND `set`.name = :collectionName
+    """)
+    fun deleteCollection(collectionName: String, languageCode: String)
+
+    @Query("""
+       SELECT DISTINCT code FROM language
+        INNER JOIN `set` ON `set`.language_id = language.id
+        WHERE `set`.name = :collectionName LIMIT 1
+    """)
+    fun getCollectionLanguage(collectionName: String): String
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(word: WordEntity)
+    fun insertWord(word: LocationEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCollection(collection: SetEntity)
 }

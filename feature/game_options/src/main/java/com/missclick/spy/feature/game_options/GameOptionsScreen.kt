@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,8 +32,6 @@ import com.missclick.spy.core.common.Constant.SPIES_MAX
 import com.missclick.spy.core.common.Constant.SPIES_MIN
 import com.missclick.spy.core.common.Constant.TIMER_MAX
 import com.missclick.spy.core.common.Constant.TIMER_MIN
-import com.missclick.spy.core.ui.kit.Image
-import com.missclick.spy.core.ui.kit.buttons.SecondaryButton
 import com.missclick.spy.core.ui.R
 import com.missclick.spy.core.ui.kit.AppDivider
 import com.missclick.spy.core.ui.kit.FrameText
@@ -87,8 +86,6 @@ private fun GameOptionsScreen(
         when (viewState){
             is GameOptionsViewState.Success -> GameOptionsSuccess(
                 onStart = onStart,
-                onGuideClick = onGuideClick,
-                onSettingsClick = onSettingsClick,
                 onSelectSetClick = onSelectSetClick,
                 vm = vm,
                 viewState = viewState
@@ -102,8 +99,6 @@ private fun GameOptionsScreen(
 private fun ColumnScope.GameOptionsSuccess(
     modifier: Modifier = Modifier,
     onStart: () -> Unit,
-    onSettingsClick: () -> Unit,
-    onGuideClick: () -> Unit,
     onSelectSetClick: () -> Unit,
     viewState: GameOptionsViewState.Success,
     vm: GameOptionsViewModel,
@@ -136,7 +131,8 @@ private fun Options(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Option(
             name = stringResource(id = R.string.players),
@@ -188,7 +184,10 @@ private fun CollectionSelector(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FrameText(text = value)
+            FrameText(
+//                modifier = Modifier.defaultMinSize(minWidth = 100.dp),
+                text = value
+            )
             Triangle(
                 modifier = Modifier.size(48.dp),
                 onClick = onSelectClick

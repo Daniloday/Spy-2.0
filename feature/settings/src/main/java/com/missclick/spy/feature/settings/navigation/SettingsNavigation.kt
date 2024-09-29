@@ -8,15 +8,15 @@ import com.missclick.spy.feature.settings.SettingsRoute
 
 const val SETTINGS_ROUTE = "settings"
 
-fun NavGraphBuilder.settingsNavigation(
-    onBackClick: () -> Unit
+fun NavGraphBuilder.settingsScreen(
+    onBackClick: () -> Unit,
 ) {
 
     composable(
         route = SETTINGS_ROUTE,
     ) {
         SettingsRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 

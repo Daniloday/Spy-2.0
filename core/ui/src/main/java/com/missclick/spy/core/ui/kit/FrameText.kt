@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -23,7 +24,7 @@ fun FrameText(
 ) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .height(36.dp)
             .defaultMinSize(minWidth = 64.dp),
         shape = AppTheme.shapes.frame,
@@ -37,7 +38,9 @@ fun FrameText(
             Text(
                 text = text,
                 style = AppTheme.types.h28,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 8.dp)
             )
         }
     }

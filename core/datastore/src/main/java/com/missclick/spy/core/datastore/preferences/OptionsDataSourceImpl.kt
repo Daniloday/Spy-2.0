@@ -34,10 +34,22 @@ internal class OptionsDataSourceImpl(
         }
     }
 
-    override suspend fun setCollectionName(collectionName: String) {
+    override suspend fun setCollectionName(
+        collectionName: String,
+        languageCode: String,
+    ) {
         optionsPreferences.updateData {
             it.copy(
+                languageCode = languageCode,
                 collectionName = collectionName
+            )
+        }
+    }
+
+    override suspend fun setLanguage(languageCode: String) {
+        optionsPreferences.updateData {
+            it.copy(
+                languageCode = languageCode,
             )
         }
     }
