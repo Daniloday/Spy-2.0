@@ -15,8 +15,8 @@ android {
         applicationId = "com.missclick.spy"
         minSdk = libs.versions.androidSdk.min.get().toInt()
         targetSdk = libs.versions.androidSdk.target.get().toInt()
-        versionCode = 1
-        versionName = "2.0.0"
+        versionCode = 11
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

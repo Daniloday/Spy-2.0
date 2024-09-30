@@ -17,7 +17,7 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 
 class InterstitialAdManagerImpl(private val context: Context): InterstitialAdManager {
 
-    private var interstitialAd: RewardedInterstitialAd? = null
+    private var interstitialAd: RewardedAd? = null
 
     init {
         loadAd()
@@ -25,8 +25,8 @@ class InterstitialAdManagerImpl(private val context: Context): InterstitialAdMan
 
     private fun loadAd() {
         val adRequest = AdRequest.Builder().build()
-        RewardedInterstitialAd.load(context, BuildConfig.ADMOB_REWARDED_INTERSTITIAL_ID, adRequest, object : RewardedInterstitialAdLoadCallback() {
-            override fun onAdLoaded(ad: RewardedInterstitialAd) {
+        RewardedAd.load(context, BuildConfig.ADMOB_REWARDED_INTERSTITIAL_ID, adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdLoaded(ad: RewardedAd) {
                 interstitialAd = ad
             }
 
