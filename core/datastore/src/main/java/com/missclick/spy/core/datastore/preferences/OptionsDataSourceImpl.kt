@@ -40,8 +40,8 @@ internal class OptionsDataSourceImpl(
     ) {
         optionsPreferences.updateData {
             it.copy(
-                languageCode = languageCode,
-                collectionName = collectionName
+                collectionName = collectionName,
+                collectionLanguageCode = languageCode
             )
         }
     }
@@ -49,7 +49,7 @@ internal class OptionsDataSourceImpl(
     override suspend fun setLanguage(languageCode: String) {
         optionsPreferences.updateData {
             it.copy(
-                languageCode = languageCode,
+                selectedLanguageCode = languageCode,
             )
         }
     }

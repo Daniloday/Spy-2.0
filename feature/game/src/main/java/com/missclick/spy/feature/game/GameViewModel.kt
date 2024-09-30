@@ -2,7 +2,6 @@ package com.missclick.spy.feature.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.domain.GetOptionsUseCase
 import com.missclick.spy.core.model.Options
@@ -32,7 +31,7 @@ class GameViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val options = getOptionsUseCase().first()
-            val wordResult = wordRepo.getWords(options.collectionName, options.languageCode)
+            val wordResult = wordRepo.getWords(options.collectionName, options.selectedLanguageCode)
             initCards(options = options, words = wordResult.first())
         }
     }

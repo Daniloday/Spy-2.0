@@ -1,8 +1,8 @@
 package com.missclick.spy.feature.collections
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,8 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.contentcapture.ContentCaptureManager.Companion.isEnabled
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -188,7 +185,7 @@ private fun AddNewCollectionCard(
                     maxLength = COLLECTION_NAME_MAX_LENGTH,
                     onDone = onSaveClick,
                     onValueChange = onValueChange,
-                    placeholder = stringResource(id = R.string.enter_dictionary)
+                    placeholder = stringResource(id = R.string.enter_set_name)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = onSaveClick) {
@@ -242,10 +239,10 @@ private fun CollectionCard(
                 Spacer(modifier = Modifier.weight(1f))
                 Triangle(
                     modifier = Modifier.size(48.dp),
-                    isEnabled = false,
+                    onClick = onCollectionClick,
                     isBorderActive = true,
-                    disabledBorderColor = if(isSelected) AppTheme.colors.secondary else AppTheme.colors.primary,
-                    disabledColor = if(isSelected) AppTheme.colors.secondary else Color.Transparent
+                    enabledBorderColor = if(isSelected) AppTheme.colors.secondary else AppTheme.colors.primary,
+                    enabledColor = if(isSelected) AppTheme.colors.secondary else Color.Transparent
                 )
             }
 

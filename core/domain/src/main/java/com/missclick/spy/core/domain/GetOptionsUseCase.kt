@@ -5,18 +5,11 @@ import com.missclick.spy.core.data.DeviceRepo
 import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.model.Options
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 class GetOptionsUseCase(
     private val optionsRepo: OptionsRepo,
@@ -25,7 +18,7 @@ class GetOptionsUseCase(
 ) {
 
     operator fun invoke(): Flow<Options> = optionsRepo.options.map { optionsRaw ->
-        val options = if (optionsRaw.languageCode.isNotEmpty()) {
+        val options = if (optionsRaw.selectedLanguageCode.isNotEmpty()) {
             optionsRaw
         } else {
             val currentLanguage = deviceRepo.getCurrentLanguageCode()
@@ -36,18 +29,17 @@ class GetOptionsUseCase(
                 wordsRepo.getDefaultLanguage()
             }
             optionsRaw.copy(
-                languageCode = newLanguageCode
+                selectedLanguageCode = newLanguageCode
             )
         }
 
-        val selectCollectionLanguageCode = wordsRepo.getCollectionLanguage(options.collectionName)
-        val words = wordsRepo.getWords(options.collectionName, options.languageCode).first()
+        val words = wordsRepo.getWords(options.collectionName, options.selectedLanguageCode).first()
 
         if (
-            selectCollectionLanguageCode != options.languageCode
+            options.collectionLanguageCode != options.selectedLanguageCode
             || words.size < MIN_LOCATIONS_TO_PLAY
         ) {
-            val defaultCollection = wordsRepo.getDefaultCollection(options.languageCode)
+            val defaultCollection = wordsRepo.getDefaultCollection(options.selectedLanguageCode)
             return@map options.copy(collectionName = defaultCollection)
         }
 

@@ -2,9 +2,9 @@ package com.missclick.spy.feature.words
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.missclick.spy.core.data.OptionsRepo
 import com.missclick.spy.core.data.WordRepo
 import com.missclick.spy.core.domain.GetOptionsUseCase
-import com.missclick.spy.core.domain.SetCollectionUseCase
 import com.missclick.spy.core.model.Set
 import com.missclick.spy.core.model.Word
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WordsViewModel(
-    private val setCollectionUseCase: SetCollectionUseCase,
+    private val optionsRepo: OptionsRepo,
     private val getOptionsUseCase: GetOptionsUseCase,
     private val wordsRepo: WordRepo,
 ) : ViewModel() {
@@ -28,8 +28,8 @@ class WordsViewModel(
     fun loadData(selectedCollectionName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val options = getOptionsUseCase().first()
-            val collection = wordsRepo.getCollection(selectedCollectionName, options.languageCode)
-            val getWordsResult = wordsRepo.getWords(collection.name, options.languageCode)
+            val collection = wordsRepo.getCollection(selectedCollectionName, options.selectedLanguageCode)
+            val getWordsResult = wordsRepo.getWords(collection.name, options.selectedLanguageCode)
             getWordsResult.collect {
                 initSuccess(collection, it)
             }
@@ -52,7 +52,8 @@ class WordsViewModel(
     suspend fun saveCollection() {
         withContext(Dispatchers.IO) {
             val successState = viewState.value as? WordsViewState.Success ?: return@withContext
-            setCollectionUseCase(successState.collectionName)
+            val options = getOptionsUseCase().first()
+            optionsRepo.setCollectionName(successState.collectionName, options.selectedLanguageCode)
         }
     }
 
@@ -60,7 +61,7 @@ class WordsViewModel(
         val successState = viewState.value as? WordsViewState.Success ?: return
         viewModelScope.launch(Dispatchers.IO) {
             val options = getOptionsUseCase().first()
-            wordsRepo.deleteCollection(successState.collectionName, options.languageCode)
+            wordsRepo.deleteCollection(successState.collectionName, options.selectedLanguageCode)
         }
     }
 
@@ -89,7 +90,7 @@ class WordsViewModel(
             )
             viewModelScope.launch(Dispatchers.IO) {
                 val options = getOptionsUseCase().first()
-                wordsRepo.addWord(word, successState.collectionName, options.languageCode)
+                wordsRepo.addWord(word, successState.collectionName, options.selectedLanguageCode)
             }
         }
         _viewState.update {

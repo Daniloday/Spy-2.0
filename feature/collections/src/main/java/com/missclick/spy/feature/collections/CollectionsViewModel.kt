@@ -3,8 +3,8 @@ package com.missclick.spy.feature.collections
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missclick.spy.core.data.WordRepo
-import com.missclick.spy.core.domain.AddCollectionUseCase
 import com.missclick.spy.core.domain.GetOptionsUseCase
+import com.missclick.spy.core.model.Set
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 class CollectionsViewModel(
     private val wordRepo: WordRepo,
     private val getOptionsUseCase: GetOptionsUseCase,
-    private val addCollectionUseCase: AddCollectionUseCase,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<CollectionsViewState>(CollectionsViewState.Loading)
@@ -25,7 +24,7 @@ class CollectionsViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val options = getOptionsUseCase().first()
             val selectedCollection = options.collectionName
-            wordRepo.getCollections(options.languageCode).collect { collections ->
+            wordRepo.getCollections(options.selectedLanguageCode).collect { collections ->
                 initSuccess(
                     selectedCollection = selectedCollection,
                     collectionNames = collections
@@ -68,8 +67,16 @@ class CollectionsViewModel(
     fun saveNewCollection() {
         val successState = viewState.value as? CollectionsViewState.Success ?: return
         if (successState.newCollection.isNotBlank()) {
+            val newSet = Set(
+                name = successState.newCollection,
+                isCustom = true
+            )
             viewModelScope.launch(Dispatchers.IO) {
-                addCollectionUseCase.invoke(successState.newCollection)
+                val options = getOptionsUseCase().first()
+                wordRepo.addCollection(
+                    newSet,
+                    options.selectedLanguageCode
+                )
             }
         }
         _viewState.update {

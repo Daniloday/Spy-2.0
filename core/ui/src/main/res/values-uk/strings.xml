@@ -22,6 +22,7 @@
     <string name="restart">Ще раз</string>
     <string name="choose">Обрати набір</string>
     <string name="print_word">Введіть локацію</string>
+    <string name="enter_set_name">Введіть назву набору</string>
     <string name="add_word">Додати слово</string>
     <string name="add_set">Додати набір</string>
     <string name="toast_empty_set">Неможна обрати порожній набір</string>
@@ -123,107 +124,6 @@
 
 
     <string name="find">Дізнатися, хто шпигун</string>
-
-
-    <string name="eng">English</string>
-    <string name="rus">Русский</string>
-    <string name="ukr">Українська</string>
-    <string name="changed_lang">Мова успішно змінена</string>
-
-    <string name="countries">Країни</string>
-    <string-array name="countries" tools:ignore="InconsistentArrays">
-        <item>Україна</item>
-        <item>США</item>
-        <item>Німеччина</item>
-        <item>Іспанія</item>
-        <item>Португалія</item>
-        <item>Італія</item>
-        <item>Франція</item>
-        <item>Нідерланди</item>
-        <item>Великобританія</item>
-        <item>Китай</item>
-        <item>Північна Корея</item>
-        <item>Японія</item>
-        <item>Бразилія</item>
-        <item>Мексика</item>
-        <item>Польща</item>
-        <item>Угорщина</item>
-        <item>Туреччина</item>
-        <item>Індія</item>
-        <item>Австралія</item>
-    </string-array>
-
-    <string name="basic">Базовий</string>
-    <string-array name="basic">
-        <item>Житловий будинок</item>
-        <item>Супермаркет</item>
-        <item>Ринок автозапчастин</item>
-        <item>Ринок</item>
-        <item>Льодова арена</item>
-        <item>Бункер</item>
-        <item>Звалище</item>
-        <item>Гараж</item>
-        <item>Дача</item>
-        <item>Палац</item>
-        <item>Церква</item>
-        <item>Кладовище</item>
-        <item>Труна</item>
-        <item>Ліфт</item>
-        <item>Ескалатор метро</item>
-        <item>Парк</item>
-        <item>Казино</item>
-        <item>Банк</item>
-        <item>Військовий госпіталь</item>
-        <item>Кіностудія</item>
-        <item>Океанський лайнер</item>
-        <item>Овочебаза</item>
-        <item>Школа</item>
-        <item>Дитячий садок</item>
-        <item>Готель</item>
-        <item>АЗС (заправка)</item>
-        <item>Автомийка</item>
-        <item>Бар</item>
-        <item>Будівельний магазин</item>
-        <item>Станція техобслуговування</item>
-        <item>Шиномонтаж</item>
-        <item>Космічна станція</item>
-        <item>Місяць</item>
-        <item>Марс</item>
-        <item>Ресторан</item>
-        <item>Підводний човен</item>
-        <item>Пляж</item>
-        <item>Пустеля</item>
-        <item>Вечірка</item>
-        <item>Посольство</item>
-        <item>Літак</item>
-        <item>Гвинтокрил</item>
-        <item>Амфітеатр</item>
-        <item>Перукарня</item>
-        <item>Аптека</item>
-        <item>Бібліотека</item>
-        <item>Спортивний зал</item>
-        <item>Басейн</item>
-    </string-array>
-
-    <string name="transport">Транспорт</string>
-    <string-array name="transport" tools:ignore="InconsistentArrays">
-        <item>Трамвай</item>
-        <item>Тролейбус</item>
-        <item>Автобус</item>
-        <item>Легковий автомобіль</item>
-        <item>Вантажівка</item>
-        <item>Фура</item>
-        <item>Метро</item>
-        <item>Трактор"</item>
-        <item>Бульдозер</item>
-        <item>Екскаватор </item>
-        <item>Підйомний кран</item>
-        <item>Сміттєвоз</item>
-        <item>Карета</item>
-        <item>Літак</item>
-        <item>Гвинтокрил</item>
-    </string-array>
-
 
 
 </resources>

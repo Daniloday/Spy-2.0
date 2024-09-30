@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 import com.missclick.spy.core.model.Word
 
 @Entity(
-    tableName = "location",
+    tableName = "word",
     foreignKeys = [
         ForeignKey(
             entity = SetEntity::class,
@@ -21,7 +21,7 @@ import com.missclick.spy.core.model.Word
         Index(value = ["set_id"]),
     ]
 )
-internal data class LocationEntity(
+internal data class WordEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "name")
@@ -32,8 +32,8 @@ internal data class LocationEntity(
     val isHidden: Boolean = false,
 )
 
-internal fun Word.asEntity(collectionId: Int): LocationEntity {
-    return LocationEntity(
+internal fun Word.asEntity(collectionId: Int): WordEntity {
+    return WordEntity(
         name = wordName,
         setId = collectionId,
         isHidden = isHidden,

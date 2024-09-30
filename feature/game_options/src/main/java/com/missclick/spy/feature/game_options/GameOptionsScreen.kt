@@ -153,7 +153,7 @@ private fun Options(
         )
         Option(
             name = stringResource(id = R.string.timer),
-            value = viewState.time.toString(),
+            value = "${viewState.time} ${stringResource(id = R.string.min)}",
             isDownEnabled = viewState.time > TIMER_MIN,
             isUpEnabled = viewState.time < TIMER_MAX,
             onUpClick = vm::onUpTime,

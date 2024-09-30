@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Spy</string>
+    <string name="app_name">Шпион</string>
     <string name="back">Назад</string>
     <string name="skip">Пропуститъ</string>
     <string name="next">Далее</string>
@@ -22,6 +22,7 @@
     <string name="restart">Еще раз</string>
     <string name="choose">Выбрать набор</string>
     <string name="print_word">Введите локацию</string>
+    <string name="enter_set_name">Введите название набора</string>
     <string name="add_word">Добавить слово</string>
     <string name="add_set">Добавить набор</string>
     <string name="toast_empty_set">Нельзя выбрать пустой набор</string>
@@ -124,104 +125,5 @@
 
 
     <string name="find">Узнать, кто шпион</string>
-
-
-    <string name="eng">English</string>
-    <string name="rus">Русский</string>
-    <string name="ukr">Українська</string>
-    <string name="changed_lang">Язык успешно изменен</string>
-
-    <string name="countries">Страны</string>
-    <string-array name="countries">
-        <item>Украина</item>
-        <item>США</item>
-        <item>Германия</item>
-        <item>Испания</item>
-        <item>Португалия</item>
-        <item>Италия</item>
-        <item>Франция</item>
-        <item>Нидерланды</item>
-        <item>Великобритания</item>
-        <item>Китай</item>
-        <item>Северная Корея</item>
-        <item>Япония</item>
-        <item>Бразилия</item>
-        <item>Мексика</item>
-        <item>Польша</item>
-        <item>Венгрия</item>
-        <item>Беларусь</item>
-        <item>Турция</item>
-        <item>Индия</item>
-        <item>Австралия</item>
-    </string-array>
-
-    <string name="basic">Базовый</string>
-    <string-array name="basic">
-        <item>Жилой дом</item>
-        <item>Супермаркет</item>
-        <item>Рынок автозапчастей</item>
-        <item>Продовольвенный рынок </item>
-        <item>Ледовая арена</item>
-        <item>Бункер</item>
-        <item>Свалка</item>
-        <item>Гараж</item>
-        <item>Дача</item>
-        <item>Дворец Путина</item>
-        <item>Церковь</item>
-        <item>Кладбище</item>
-        <item>Гроб</item>
-        <item>Лифт</item>
-        <item>Эскалатор метро</item>
-        <item>Парк</item>
-        <item>Казино</item>
-        <item>Банк</item>
-        <item>Военный госпиталь</item>
-        <item>Киностудия</item>
-        <item>Океанский лайнер</item>
-        <item>Овощебаза</item>
-        <item>Школа</item>
-        <item>Детский сад</item>
-        <item>Отель</item>
-        <item>АЗС (заправка)</item>
-        <item>Автомойка</item>
-        <item>Бар</item>
-        <item>Строительный магазин</item>
-        <item>Станция техобслуживания</item>
-        <item>Шиномонтаж</item>
-        <item>Космическая станция</item>
-        <item>Луна</item>
-        <item>Марс</item>
-        <item>Ресторан</item>
-        <item>Подводная лодка</item>
-        <item>Пляж</item>
-        <item>Пустыня</item>
-        <item>Вечеринка</item>
-        <item>Посольство</item>
-        <item>Самолет</item>
-        <item>Вертолет</item>
-        <item>Амфитеатр</item>
-        <item>Парикмахерская</item>
-        <item>Аптека</item>
-        <item>Библиотека</item>
-        <item>Спортивный зал</item>
-        <item>Бассейн</item>
-    </string-array>
-
-    <string name="transport">Транспорт</string>
-    <string-array name="transport">
-        <item>Трамвай</item>
-        <item>Тролейбус</item>
-        <item>Автобус</item>
-        <item>Легковая машина</item>
-        <item>Грузовик</item>
-        <item>Фура</item>
-        <item>Метрополитен</item>
-        <item>Трактор "Беларус"</item>
-        <item>Бульдозер</item>
-        <item>Экскаватор </item>
-        <item>Подъемный кран</item>
-        <item>Мусоровоз</item>
-        <item>Карета</item>
-    </string-array>
 
 </resources>

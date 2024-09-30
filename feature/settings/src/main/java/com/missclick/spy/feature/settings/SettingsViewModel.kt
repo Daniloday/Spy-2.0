@@ -30,7 +30,7 @@ class SettingsViewModel(
                             LanguageView(
                                 name = it.name,
                                 code = it.code,
-                                isSelected = it.code == options.languageCode
+                                isSelected = it.code == options.selectedLanguageCode
                             )
                         }
                     )

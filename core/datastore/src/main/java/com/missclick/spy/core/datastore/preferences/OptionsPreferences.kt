@@ -9,7 +9,8 @@ internal data class OptionsPreferences(
     val playersCount: Int,
     val spiesCount: Int,
     val time: Int,
-    val languageCode: String,
+    val selectedLanguageCode: String,
+    val collectionLanguageCode: String,
     val collectionName: String,
 )
 
@@ -17,6 +18,7 @@ internal fun OptionsPreferences.asModel() = Options(
     playersCount = playersCount,
     spiesCount = spiesCount,
     time = time,
-    languageCode = languageCode,
+    selectedLanguageCode = selectedLanguageCode,
     collectionName = collectionName,
+    collectionLanguageCode = collectionLanguageCode
 )

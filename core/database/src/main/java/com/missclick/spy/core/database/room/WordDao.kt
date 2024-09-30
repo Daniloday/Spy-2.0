@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.missclick.spy.core.database.enity.LanguageEntity
-import com.missclick.spy.core.database.enity.LocationEntity
+import com.missclick.spy.core.database.enity.WordEntity
 import com.missclick.spy.core.database.enity.SetEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface WordDao {
     @Query("""
-        SELECT location.name FROM location
-        INNER JOIN `set` ON location.set_id = `set`.id
+        SELECT word.name FROM word
+        INNER JOIN `set` ON word.set_id = `set`.id
         INNER JOIN language ON `set`.language_id = language.id
         WHERE `set`.name = :collectionName AND code = :languageCode
     """)
@@ -76,7 +76,7 @@ internal interface WordDao {
     fun isExistLanguage(languageCode: String): Boolean
 
     @Query("""
-       DELETE FROM location WHERE name =:wordName
+       DELETE FROM word WHERE name =:wordName
     """)
     fun deleteWord(wordName: String)
 
@@ -96,7 +96,7 @@ internal interface WordDao {
     fun getCollectionLanguage(collectionName: String): String
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertWord(word: LocationEntity)
+    fun insertWord(word: WordEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCollection(collection: SetEntity)

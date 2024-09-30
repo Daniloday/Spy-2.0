@@ -15,7 +15,8 @@ internal class OptionsPreferencesSerializer(
         spiesCount = 1,
         time = 2,
         collectionName = "",
-        languageCode = ""
+        selectedLanguageCode = "",
+        collectionLanguageCode = "",
     )
 ) : Serializer<OptionsPreferences> {
 
