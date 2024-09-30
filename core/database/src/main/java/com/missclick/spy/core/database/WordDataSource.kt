@@ -23,6 +23,5 @@ interface WordDataSource {
 
     suspend fun getCollectionLanguage(collectionName: String): String
 
-    suspend fun addWordsForDev()
 }
 
