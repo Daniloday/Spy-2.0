@@ -2,6 +2,9 @@ package com.missclick.spy.core.datastore.preferences
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import com.missclick.spy.core.common.Constant.PLAYERS_DEFAULT
+import com.missclick.spy.core.common.Constant.SPIES_DEFAULT
+import com.missclick.spy.core.common.Constant.TIMER_DEFAULT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
@@ -11,9 +14,9 @@ import java.io.OutputStream
 
 internal class OptionsPreferencesSerializer(
     override val defaultValue: OptionsPreferences = OptionsPreferences(
-        playersCount = 4,
-        spiesCount = 1,
-        time = 2,
+        playersCount = PLAYERS_DEFAULT,
+        spiesCount = SPIES_DEFAULT,
+        time = TIMER_DEFAULT,
         collectionName = "",
         selectedLanguageCode = "",
         collectionLanguageCode = "",
